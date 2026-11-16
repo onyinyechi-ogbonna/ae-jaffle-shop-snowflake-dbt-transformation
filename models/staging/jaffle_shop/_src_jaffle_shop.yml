@@ -15,6 +15,12 @@ sources:
           period: day
     tables:
       - name: customers
+        columns:
+          - name: id
+            description: primary key
+            data_tests:
+              - unique
+              - not_null  
         config:
           freshness: null   # customers has no _etl_loaded_at column
       - name: orders
