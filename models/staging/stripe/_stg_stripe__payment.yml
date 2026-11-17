@@ -1,0 +1,38 @@
+
+models:
+  - name: stg_stripe__payments
+    description: One payment attempt per row. An order can have multiple payments.
+    columns:
+      - name: payment_id
+        description: Primary key for the payments table
+        data_tests:
+          - unique
+          - not_null
+      - name: order_id
+        description: Foreign key to stg_jaffle_shop__orders
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_jaffle_shop__orders')
+                field: order_id
+      - name: payment_method
+        description: How the customer paid
+        data_tests:
+          - accepted_values:
+              arguments:
+                values:
+                  - credit_card
+                  - coupon
+                  - bank_transfer
+                  - gift_card
+      - name: status
+        description: Outcome of the payment attempt. Only 'success' counts towards revenue.
+        data_tests:
+          - accepted_values:
+              arguments:
+                values:
+                  - success
+                  - fail
+      - name: amount
+        description: Payment amount in dollars (converted from cents in staging)
